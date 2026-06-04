@@ -1,0 +1,28 @@
+{
+  "name": "studysync",
+  "version": "1.0.0",
+  "description": "A multilingual study management app with support for English, Portuguese, and Changana",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 3000",
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'StudySync is a static site - no build required'",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "study",
+    "tasks",
+    "learning",
+    "productivity",
+    "multilingual"
+  ],
+  "author": "StudySync Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NaimaGulele/StudySync.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
