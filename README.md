@@ -37,6 +37,49 @@ A modern, multilingual study management application designed to help students or
 - Track personal statistics
 - Manage study preferences
 
+## ♿ Accessibility & Inclusive Design
+
+StudySync is built with accessibility at its core, ensuring all users can effectively manage their studies.
+
+### Audio Features (🔊)
+- **Text-to-Speech**: Click the speaker icon on any page to hear content read aloud
+- **Multi-Language Audio**: Audio adapts to your selected language (English, Portuguese, Changana)
+- **Natural Voice**: Uses browser's native speech synthesis for clear, natural-sounding audio
+- **Interactive Playback**: Visual feedback shows when audio is playing
+- **Easy Controls**: Single-click audio playback on all major page sections
+
+### Visual Accessibility
+- **High Contrast Mode** (♿): Toggle to enable enhanced colors for users with low vision
+- **Semantic HTML**: Proper heading hierarchy and landmark elements for screen readers
+- **Color Independence**: Information is never conveyed by color alone
+- **Focus Management**: Clear visual indicators for keyboard navigation
+- **Sufficient Contrast**: WCAG AA compliant color contrast ratios
+
+### Screen Reader Support
+- **Skip Links**: "Skip to main content" link for quick navigation
+- **ARIA Labels**: All interactive elements have descriptive labels
+- **Semantic Landmarks**: Proper use of &lt;main&gt;, &lt;nav&gt;, &lt;aside&gt;, etc.
+- **Form Labels**: All form inputs have associated labels
+- **Status Messages**: Confirmation messages announced to screen readers
+
+### Keyboard Navigation
+- **Tab Navigation**: All interactive elements are keyboard accessible
+- **Focus Visible**: Clear focus indicators on all buttons and links
+- **Escape to Close**: Modals close with Escape key
+- **Enter/Space to Activate**: Standard keyboard interactions work throughout
+
+### Mobile Accessibility
+- **Touch Targets**: Buttons are 44px × 44px for easy tapping
+- **Responsive Text**: Font sizes scale appropriately on mobile
+- **Readable Line Length**: Optimal line length for readability
+- **No Hover Dependencies**: All functionality works without hover
+
+### Inclusive Features
+- **Three Language Support**: English, Portuguese, and proper Mozambican Changana
+- **Cultural Sensitivity**: Authentic translations respecting local context
+- **User-Centered Design**: Built with input from diverse user groups
+- **Dyslexia Friendly**: Clear typography with good letter spacing
+
 ## Getting Started
 
 ### Prerequisites
@@ -85,6 +128,20 @@ http://localhost:3000
 
 ### Switching Languages
 Click the language buttons in the sidebar (EN, PT, TS) to switch between English, Portuguese, and Changana.
+
+### Using Audio Features
+1. Look for the speaker icon (🔊) on page titles
+2. Click the icon to hear the content read aloud
+3. Audio will automatically play in your selected language
+4. The button will show a pulsing effect while audio is playing
+5. Click again to stop playback
+
+### Enabling High Contrast Mode
+1. Locate the accessibility button (♿) in the top-right corner
+2. Click to toggle high contrast mode on/off
+3. The button will highlight when high contrast is active
+4. Helpful for users with low vision or light sensitivity
+5. Mode preference is maintained during your session
 
 ## Project Structure
 
