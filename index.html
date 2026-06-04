@@ -21,10 +21,13 @@
           <span id="sidebar-user-name">Ana Machava</span>
         </button>
       </div>
-      <div class="lang-switch" aria-label="Language switcher">
-        <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" onclick="setLanguage('pt')">PT</button>
-        <button class="lang-btn" onclick="setLanguage('ts')">TS</button>
+      <div class="lang-switch" aria-label="Language and accessibility options" style="flex-direction: column; gap: 6px; width: auto;">
+        <div style="display: flex; gap: 4px;">
+          <button class="lang-btn active" onclick="setLanguage('en')" title="English">EN</button>
+          <button class="lang-btn" onclick="setLanguage('pt')" title="Português">PT</button>
+          <button class="lang-btn" onclick="setLanguage('ts')" title="Changana">TS</button>
+        </div>
+        <button class="lang-btn" onclick="toggleHighContrast()" id="contrast-btn" aria-label="Toggle high contrast mode" title="High Contrast">♿</button>
       </div>
     </div>
     <nav>
@@ -51,9 +54,14 @@
       <div class="page-header">
         <div class="hero-copy">
           <div class="eyebrow">StudySync</div>
-          <div class="page-title" id="greeting-title">Good morning, Ana 👋</div>
-          <div class="page-subtitle" id="today-date">Loading...</div>
-          <p class="hero-tag" data-i18n="hero.tag">Plan tasks, track subjects, and stay focused in one calm study hub.</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="flex: 1;">
+              <div class="page-title" id="greeting-title">Good morning, Ana 👋</div>
+              <div class="page-subtitle" id="today-date">Loading...</div>
+              <p class="hero-tag" data-i18n="hero.tag">Plan tasks, track subjects, and stay focused in one calm study hub.</p>
+            </div>
+            <button class="audio-btn" onclick="speakText(document.getElementById('greeting-title').textContent)" aria-label="Listen to greeting" title="Listen"><span>🔊</span></button>
+          </div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-primary" onclick="openAddTask()" data-i18n="actions.addTask">+ Add Task</button>
@@ -109,8 +117,13 @@
       <div class="page-header">
         <div class="hero-copy">
           <div class="eyebrow">StudySync</div>
-          <div class="page-title" data-i18n="pages.tasksTitle">All Tasks</div>
-          <div class="page-subtitle" data-i18n="pages.tasksSubtitle">Manage and track your study tasks</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="flex: 1;">
+              <div class="page-title" id="page-tasks-title" data-i18n="pages.tasksTitle">All Tasks</div>
+              <div class="page-subtitle" data-i18n="pages.tasksSubtitle">Manage and track your study tasks</div>
+            </div>
+            <button class="audio-btn" onclick="speakText('All Tasks. Manage and track your study tasks.')" aria-label="Listen to page title" title="Listen"><span>🔊</span></button>
+          </div>
         </div>
         <div style="display:flex;gap:8px">
           <select id="filter-subject" onchange="renderTasks()" style="width:auto;padding:9px 12px">
@@ -133,8 +146,13 @@
       <div class="page-header">
         <div class="hero-copy">
           <div class="eyebrow">StudySync</div>
-          <div class="page-title" data-i18n="pages.subjectsTitle">Subjects</div>
-          <div class="page-subtitle" data-i18n="pages.subjectsSubtitle">Organize your courses and track progress</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="flex: 1;">
+              <div class="page-title" id="page-subjects-title" data-i18n="pages.subjectsTitle">Subjects</div>
+              <div class="page-subtitle" data-i18n="pages.subjectsSubtitle">Organize your courses and track progress</div>
+            </div>
+            <button class="audio-btn" onclick="speakText('Subjects. Organize your courses and track progress.')" aria-label="Listen to page title" title="Listen"><span>🔊</span></button>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="openAddSubject()" data-i18n="actions.addSubject">+ Add Subject</button>
       </div>
@@ -146,8 +164,13 @@
       <div class="page-header">
         <div class="hero-copy">
           <div class="eyebrow">StudySync</div>
-          <div class="page-title" data-i18n="pages.resourcesTitle">Resources</div>
-          <div class="page-subtitle" data-i18n="pages.resourcesSubtitle">Links, notes, and study materials</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="flex: 1;">
+              <div class="page-title" id="page-resources-title" data-i18n="pages.resourcesTitle">Resources</div>
+              <div class="page-subtitle" data-i18n="pages.resourcesSubtitle">Links, notes, and study materials</div>
+            </div>
+            <button class="audio-btn" onclick="speakText('Resources. Links, notes, and study materials.')" aria-label="Listen to page title" title="Listen"><span>🔊</span></button>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="openAddResource()" data-i18n="actions.addResource">+ Add Resource</button>
       </div>
@@ -282,7 +305,7 @@
   </div>
 </div>
 
-<!-- ── Delete Confirm Modal ────────────────────────────── -->
+<!-- ── Delete Confirm Modal ───────────���────────────────── -->
 <div class="modal-overlay" id="modal-confirm">
   <div class="modal" style="width:360px">
     <div class="modal-title" data-i18n="modals.confirmDeleteTitle">Confirm Deletion</div>

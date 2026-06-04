@@ -5,6 +5,8 @@
 // ── State ──────────────────────────────────────────────────────
 let state = {
   language: 'en',
+  highContrast: false,
+  audioEnabled: true,
   user: {
     name: 'Ana Machava',
     role: 'Student',
@@ -253,108 +255,108 @@ const translations = {
     'toast.profileNameRequired': '⚠️ Digite seu nome completo',
   },
   ts: {
-    'nav.dashboard': 'Mbongolo',
-    'nav.tasks': 'Xana',
+    'nav.dashboard': 'Tabita',
+    'nav.tasks': 'Missamu',
     'nav.subjects': 'Mihlelo',
-    'nav.resources': 'Umuntu wokugala',
-    'actions.editProfile': 'Kambisa Ntlhantlhu',
-    'actions.addTask': '+ Hlamula Xana',
+    'nav.resources': 'Vela',
+    'actions.editProfile': 'Suka Profilee',
+    'actions.addTask': '+ Hlamula Missamu',
     'actions.addSubject': '+ Hlamula Mihlelo',
-    'actions.addResource': '+ Hlamula Umuntu wokugala',
-    'actions.cancel': 'Dzhitihanye',
-    'actions.saveTask': 'Kolekterisani Xana',
-    'actions.saveProfile': 'Kolekterisani Ntlhantlhu',
+    'actions.addResource': '+ Hlamula Vela',
+    'actions.cancel': 'Akana',
+    'actions.saveTask': 'Kolekta Missamu',
+    'actions.saveProfile': 'Kolekta Profilee',
     'actions.addSubjectBtn': 'Hlamula Mihlelo',
-    'actions.addResourceBtn': 'Hlamula Umuntu wokugala',
+    'actions.addResourceBtn': 'Hlamula Vela',
     'actions.delete': 'Susa',
     'actions.openResource': 'Vula ↗',
     'filters.allSubjects': 'Mihlelo ya Lonkulu',
-    'filters.allPriorities': 'Lunkulunkulu lonkulu',
-    'pages.tasksTitle': 'Mihlelo ya Lonkulu',
-    'pages.tasksSubtitle': 'Tiyisana na ku tihatisa xana xa risikilisana',
+    'filters.allPriorities': 'Zunguza Lonkulu',
+    'pages.tasksTitle': 'Missamu ya Lonkulu',
+    'pages.tasksSubtitle': 'Tihanisa na kulandzela missamu ya risikilisana',
     'pages.subjectsTitle': 'Mihlelo',
-    'pages.subjectsSubtitle': 'Hlawula miendzila ya risikilisana na kutihatisa',
-    'pages.resourcesTitle': 'Umuntu wokugala',
-    'pages.resourcesSubtitle': 'Ikhonekisheni, manotiki na vela xa risikilisana',
-    'dashboard.todayTasks': 'Xana xa Langa',
-    'dashboard.pendingTasks': 'Mihlelo ya Lonkulu Endzeni',
-    'dashboard.upcoming': '📅 Ntimu wu Xikhala',
-    'dashboard.progress': '📈 Vona va Mihlelo',
-    'dashboard.overdueBy': 'Ku hela {days}d',
-    'dashboard.dueToday': 'Yana langa',
+    'pages.subjectsSubtitle': 'Hlawula mihlelo ni kulandzela xilo leswaku',
+    'pages.resourcesTitle': 'Vela',
+    'pages.resourcesSubtitle': 'Xikhonekisheni, manotiki ni matiriyale ya risikilisana',
+    'dashboard.todayTasks': 'Missamu ya Langa',
+    'dashboard.pendingTasks': 'Missamu ya Lonkulu',
+    'dashboard.upcoming': '📅 Muti wu Xikhala',
+    'dashboard.progress': '📈 Xilo leswaku va Mihlelo',
+    'dashboard.overdueBy': 'Ku hele {days}d',
+    'dashboard.dueToday': 'Langa lima',
     'dashboard.tomorrow': 'Mani',
-    'dashboard.daysAway': 'Ku suka {days} siku',
-    'dashboard.todayTaskSingular': '1 xana',
-    'dashboard.todayTasksCount': '{count} xana',
-    'dashboard.noTasksToday': '🎉 Xana xu nge xa langa!',
+    'dashboard.daysAway': '{days} siku',
+    'dashboard.todayTaskSingular': '1 missamu',
+    'dashboard.todayTasksCount': '{count} missamu',
+    'dashboard.noTasksToday': '🎉 Missamu xa langa xi nge!',
     'dashboard.allCaughtUp': 'Konwile lonkulu! ✨',
-    'dashboard.noUpcoming': 'Xana xu nge xa ntimu ☎️',
-    'dashboard.noSubjects': 'Mihlelo xi nge endzeni',
-    'dashboard.noResources': 'Umuntu wokugala wu nge endzeni',
-    'stats.totalTasks': 'Xana xa Konwile',
+    'dashboard.noUpcoming': 'Muti wu xikhala wu nge 🎉',
+    'dashboard.noSubjects': 'Mihlelo yi nge',
+    'dashboard.noResources': 'Vela yi nge',
+    'stats.totalTasks': 'Missamu ya Lonkulu',
     'stats.completed': 'Kunginisiwe',
-    'stats.dueSoon': 'Ku Xikhala',
+    'stats.dueSoon': 'Xikhala',
     'stats.subjects': 'Mihlelo',
-    'forms.taskName': 'Ritorasini ra Xana *',
+    'forms.taskName': 'Ritorasini ra Missamu *',
     'forms.subject': 'Mihlelo *',
-    'forms.dueDate': 'Langa ra Yikelo *',
-    'forms.priority': 'Lunkulunkulu',
+    'forms.dueDate': 'Langa ra Muti *',
+    'forms.priority': 'Zunguza',
     'forms.subjectName': 'Ritorasini ra Mihlelo *',
     'forms.color': 'Kula',
     'forms.title': 'Ritorasini *',
-    'forms.type': 'Xikalo',
-    'forms.url': 'URL / Ku tiha',
+    'forms.type': 'Xitengo',
+    'forms.url': 'URL / Nexu',
     'forms.fullName': 'Ritorasini ra Konwile',
-    'forms.role': 'Misava',
+    'forms.role': 'Vana',
     'forms.email': 'Imeyili',
-    'forms.bio': 'Ku tiha',
-    'priority.high': 'Ku Hlawela',
-    'priority.medium': 'Ku Hlerisa',
+    'forms.bio': 'Nexu',
+    'priority.high': 'Kuna Kunene',
+    'priority.medium': 'Pakati',
     'priority.low': 'Ku Ra Tala',
     'filters.selectSubject': 'Hlawula mihlelo...',
     'resourceTypes.link': 'Xikhonekisheni',
-    'resourceTypes.note': 'Manotiki',
+    'resourceTypes.note': 'Nothisi',
     'resourceTypes.pdf': 'PDF',
     'resourceTypes.video': 'Vidiyo',
-    'placeholder.taskExample': 'ku va: Risikilisana Chaphitha 5 — HCI',
+    'placeholder.taskExample': 'ku va: Risikilisana Chaphita 5 — HCI',
     'placeholder.subjectExample': 'ku va: Ku tihanisa Ku Kahariwile',
-    'placeholder.resourceTitleExample': 'ku va: PDF ya 10 Heuristics',
+    'placeholder.resourceTitleExample': 'ku va: PDF ya Nielsen Heuristics',
     'placeholder.resourceUrlExample': 'https://...',
     'placeholder.profileName': 'Ritorasini ra konwile',
-    'placeholder.profileRole': 'Xikali, Ku hlela, etc.',
-    'placeholder.profileEmail': 'wena@xikalo.com',
-    'placeholder.profileBio': 'Tiha mina ku tihanisa risikilisana',
-    'tasks.emptyTitle': 'Xana xi nge',
-    'tasks.emptyText': 'Hlamula xana ku thoma',
-    'resources.emptyTitle': 'Umuntu wokugala wu nge',
-    'resources.emptyText': 'Hlamula ikhonekisheni, manotiki na vela',
-    'subjects.emptyTitle': 'Mihlelo xi nge',
+    'placeholder.profileRole': 'Mutana wa risikilisana, Mufundisi, etc.',
+    'placeholder.profileEmail': 'wewe@xikalo.com',
+    'placeholder.profileBio': 'Tiha mina k va risikilisana rawe',
+    'tasks.emptyTitle': 'Missamu xi nge',
+    'tasks.emptyText': 'Hlamula missamu ku thoma',
+    'resources.emptyTitle': 'Vela yi nge',
+    'resources.emptyText': 'Hlamula xikhonekisheni, nothisi ni matiriyale',
+    'subjects.emptyTitle': 'Mihlelo yi nge',
     'subjects.emptyText': 'Hlamula mihlelo ya ntshembu ku thoma',
-    'subjects.statsTasksSingular': '📋 1 xana',
-    'subjects.statsTasksPlural': '📋 {count} xana',
+    'subjects.statsTasksSingular': '📋 1 missamu',
+    'subjects.statsTasksPlural': '📋 {count} missamu',
     'subjects.statsDoneSingular': '✅ 1 kunginisiwe',
     'subjects.statsDonePlural': '✅ {count} kunginisiwe',
     'subjects.statsComplete': '{percent}% kunginisiwe',
-    'modals.addTaskTitle': 'Hlamula Xana',
+    'modals.addTaskTitle': 'Hlamula Missamu',
     'modals.addSubjectTitle': 'Hlamula Mihlelo',
-    'modals.addResourceTitle': 'Hlamula Umuntu wokugala',
-    'modals.editProfileTitle': 'Kambisa Ntlhantlhu',
-    'modals.confirmDeleteTitle': 'Kukuninga Ku Susa',
-    'modals.confirmDeleteText': 'U ntse wu navela ku susa ino veka? Ino veka a yi nga suseka nkukumbu.',
+    'modals.addResourceTitle': 'Hlamula Vela',
+    'modals.editProfileTitle': 'Suka Profilee',
+    'modals.confirmDeleteTitle': 'Kumile Kususa',
+    'modals.confirmDeleteText': 'U swela kususa ino veka? Ino veka a yi nga kusuka ka nkukumbu.',
     'greeting.morning': 'Mani, {name} 👋',
     'greeting.afternoon': 'Embeji, {name} 👋',
     'greeting.evening': 'Madyambu, {name} 👋',
-    'toast.taskAdded': '✅ Xana xi hlamuliswe!',
-    'toast.taskUpdated': '✏️ Xana xi kambiswe!',
-    'toast.taskComplete': '✅ Xana xi kunginisiwe!',
-    'toast.taskReopened': '↩️ Xana xi vuliswe',
-    'toast.subjectAdded': '📚 Mihlelo yi hlamuliswe!',
-    'toast.resourceAdded': '🔗 Umuntu wokugala wu hlamuliswe!',
-    'toast.deleted': '🗑️ Ku susiwe konwile',
-    'toast.profileUpdated': '👤 Ntlhantlhu yi kambiswe!',
-    'toast.taskNameRequired': '⚠️ Tiha ritorasini ra xana',
+    'toast.taskAdded': '✅ Missamu yi hlamulisiwe!',
+    'toast.taskUpdated': '✏️ Missamu yi sukiswe!',
+    'toast.taskComplete': '✅ Missamu yi kunginisiwe!',
+    'toast.taskReopened': '↩️ Missamu yi vulisiwe',
+    'toast.subjectAdded': '📚 Mihlelo yi hlamulisiwe!',
+    'toast.resourceAdded': '🔗 Vela yi hlamulisiwe!',
+    'toast.deleted': '🗑️ Kususiwe konwile',
+    'toast.profileUpdated': '👤 Profilee yi sukiswe!',
+    'toast.taskNameRequired': '⚠️ Tiha ritorasini ra missamu',
     'toast.subjectRequired': '⚠️ Hlawula mihlelo',
-    'toast.dueDateRequired': '⚠️ Seta langa ra yikelo',
+    'toast.dueDateRequired': '⚠️ Seta langa ra muti',
     'toast.subjectNameRequired': '⚠️ Tiha ritorasini ra mihlelo',
     'toast.subjectExists': '⚠️ Ino mihlelo yi endzeni',
     'toast.titleRequired': '⚠️ Tiha ritorasini',
@@ -370,12 +372,51 @@ function setLanguage(lang) {
   state.language = lang;
   document.documentElement.lang = lang;
   const langMap = { 'en': 'EN', 'pt': 'PT', 'ts': 'TS' };
-  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.textContent === langMap[lang]));
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    const isActive = btn.textContent === langMap[lang];
+    btn.classList.toggle('active', isActive);
+  });
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const text = t(el.dataset.i18n);
     if (text) el.textContent = text;
   });
   render();
+}
+
+// ── Accessibility Features ──────────────────────────────────
+function toggleHighContrast() {
+  state.highContrast = !state.highContrast;
+  document.body.classList.toggle('high-contrast', state.highContrast);
+  const btn = document.getElementById('contrast-btn');
+  if (btn) {
+    btn.style.background = state.highContrast ? 'rgba(255, 255, 255, 0.2)' : '';
+  }
+}
+
+// ── Text-to-Speech Audio Feature ────────────────────────────
+function speakText(text) {
+  if (!state.audioEnabled || !window.speechSynthesis) return;
+  
+  // Cancel any ongoing speech
+  window.speechSynthesis.cancel();
+  
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = state.language === 'pt' ? 'pt-BR' : 
+                   state.language === 'ts' ? 'pt-MZ' : 'en-US';
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  
+  // Add playing animation
+  event.target.classList.add('playing');
+  utterance.onend = () => {
+    event.target.classList.remove('playing');
+  };
+  utterance.onerror = () => {
+    event.target.classList.remove('playing');
+  };
+  
+  window.speechSynthesis.speak(utterance);
 }
 
 // ── Date Utilities ─────────────────────────────────────────────
