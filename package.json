@@ -1,0 +1,36 @@
+{
+  "name": "studysync",
+  "version": "1.0.0",
+  "description": "A calm study hub to plan tasks, track subjects, and stay focused on your studies. Supports voice input, multiple languages, and offline functionality.",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "http-server -p 3000 -c-1 --cors",
+    "start": "http-server -p 3000 -c-1 --cors",
+    "serve": "python3 -m http.server 3000",
+    "build": "echo 'No build required - vanilla HTML/CSS/JS'",
+    "test": "echo 'Manual testing required'"
+  },
+  "keywords": [
+    "study",
+    "planner",
+    "tasks",
+    "voice-input",
+    "pwa",
+    "multilingual",
+    "accessible"
+  ],
+  "author": "StudySync Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NaimaGulele/StudySync"
+  },
+  "homepage": "https://studysync.vercel.app"
+}
