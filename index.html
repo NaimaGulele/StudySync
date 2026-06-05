@@ -65,7 +65,17 @@
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-primary" onclick="openAddTask()" data-i18n="actions.addTask">+ Add Task</button>
+          <button class="btn btn-voice" id="voice-btn" onclick="toggleVoiceInput()" aria-label="Voice input" title="Click to add task by voice">🎤</button>
         </div>
+      </div>
+
+      <!-- Voice Input Indicator -->
+      <div class="voice-indicator" id="voice-indicator">
+        <div class="voice-status">
+          <span class="voice-dot"></span>
+          <span id="voice-status-text">Listening...</span>
+        </div>
+        <button class="btn-close-voice" onclick="stopVoiceInput()" aria-label="Stop voice input">×</button>
       </div>
 
       <div class="stat-grid">
@@ -171,7 +181,10 @@
     <div class="modal-title" id="modal-task-title" data-i18n="modals.addTaskTitle">Add New Task</div>
     <div class="form-group">
       <label data-i18n="forms.taskName">Task Name *</label>
-      <input type="text" id="task-name" data-i18n-placeholder="placeholder.taskExample" placeholder="e.g., Study Chapter 5 — HCI" />
+      <div style="display:flex;gap:8px">
+        <input type="text" id="task-name" data-i18n-placeholder="placeholder.taskExample" placeholder="e.g., Study Chapter 5 — HCI" />
+        <button class="btn btn-voice" onclick="voiceInputTaskName()" aria-label="Voice input for task name" title="Speak task name">🎤</button>
+      </div>
     </div>
     <div class="two-col">
       <div class="form-group">

@@ -662,7 +662,7 @@ function renderResources() {
     : `<div class="empty-state"><div class="icon">🔗</div><h3>${t('resources.emptyTitle')}</h3><p>${t('resources.emptyText')}</p></div>`;
 }
 
-// ── Select Sync ────────────────────────────────────────────────
+// ── Select Sync ─────────────────────���──────────────────────────
 function updateSelects() {
   ['task-subject', 'res-subject'].forEach(id => {
     const el = document.getElementById(id);
@@ -864,6 +864,132 @@ function showToast(msg, type = '') {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+// ── Voice Input ────────────────────────────────────────────────
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isListening = false;
+let voiceInputTarget = null;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  
+  recognition.onstart = () => {
+    isListening = true;
+    document.getElementById('voice-btn').classList.add('recording');
+    document.getElementById('voice-indicator').classList.add('active');
+    document.getElementById('voice-status-text').textContent = t('voice.listening') || 'Listening...';
+  };
+
+  recognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const current = event.results[i][0].transcript;
+      transcript += current + ' ';
+    }
+    transcript = transcript.trim();
+    
+    if (event.results[event.results.length - 1].isFinal) {
+      document.getElementById('voice-status-text').textContent = t('voice.processing') || 'Processing...';
+      
+      if (voiceInputTarget === 'task-name') {
+        document.getElementById('task-name').value = transcript;
+      }
+      
+      setTimeout(() => {
+        stopVoiceInput();
+        showToast(`✅ ${t('voice.captured') || 'Voice input captured'}`, 'success');
+      }, 500);
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.log('[v0] Voice error:', event.error);
+    stopVoiceInput();
+    showToast(`⚠️ ${t('voice.error') || 'Voice input error: ' + event.error}`, 'error');
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    document.getElementById('voice-btn').classList.remove('recording');
+    document.getElementById('voice-indicator').classList.remove('active');
+  };
+}
+
+function toggleVoiceInput() {
+  if (!SpeechRecognition) {
+    showToast('⚠️ Voice input not supported in your browser', 'error');
+    return;
+  }
+  
+  if (isListening) {
+    stopVoiceInput();
+  } else {
+    voiceInputTarget = 'quick-add';
+    startVoiceInput();
+  }
+}
+
+function voiceInputTaskName() {
+  if (!SpeechRecognition) {
+    showToast('⚠️ Voice input not supported in your browser', 'error');
+    return;
+  }
+  
+  voiceInputTarget = 'task-name';
+  startVoiceInput();
+}
+
+function startVoiceInput() {
+  if (recognition && !isListening) {
+    try {
+      recognition.start();
+    } catch (e) {
+      console.log('[v0] Voice start error:', e);
+    }
+  }
+}
+
+function stopVoiceInput() {
+  if (recognition && isListening) {
+    try {
+      recognition.stop();
+    } catch (e) {
+      console.log('[v0] Voice stop error:', e);
+    }
+  }
+  document.getElementById('voice-btn').classList.remove('recording');
+  document.getElementById('voice-indicator').classList.remove('active');
+}
+
+// Add voice translations
+const voiceTranslations = {
+  en: {
+    'voice.listening': 'Listening... Speak now',
+    'voice.processing': 'Processing your voice...',
+    'voice.captured': 'Voice input captured',
+    'voice.error': 'Voice input error',
+  },
+  pt: {
+    'voice.listening': 'Ouvindo... Fale agora',
+    'voice.processing': 'Processando sua voz...',
+    'voice.captured': 'Entrada de voz capturada',
+    'voice.error': 'Erro de entrada de voz',
+  },
+  ch: {
+    'voice.listening': 'Ku hloniphela... Bolela Svisso',
+    'voice.processing': 'Ku hloniphela xivavo xa wena...',
+    'voice.captured': 'Xivavo xhlanganisiwile',
+    'voice.error': 'Xivavo xa swipalo',
+  },
+};
+
+// Merge voice translations
+Object.keys(voiceTranslations).forEach(lang => {
+  Object.assign(translations[lang], voiceTranslations[lang]);
+});
 
 // ── Init ───────────────────────────────────────────────────────
 updateColorBtns();
