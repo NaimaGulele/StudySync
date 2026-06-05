@@ -37,6 +37,7 @@ let state = {
 
 const translations = {
   en: {
+    'hero.tag': 'Plan tasks, track subjects, and stay focused in one calm study hub.',
     'nav.dashboard': 'Dashboard',
     'nav.tasks': 'Tasks',
     'nav.subjects': 'Subjects',
@@ -145,6 +146,7 @@ const translations = {
     'toast.profileNameRequired': '⚠️ Please enter your full name',
   },
   pt: {
+    'hero.tag': 'Planeje tarefas, acompanhe disciplinas e mantenha o foco em um hub de estudo tranquilo.',
     'nav.dashboard': 'Painel',
     'nav.tasks': 'Tarefas',
     'nav.subjects': 'Disciplinas',
@@ -253,6 +255,7 @@ const translations = {
     'toast.profileNameRequired': '⚠️ Digite seu nome completo',
   },
   ch: {
+    'hero.tag': 'Pfuna na kundzela ntlawa, akulandza mibirhi, no kundzela nndzela vhahle ku kustudiela.',
     'nav.dashboard': 'Boti',
     'nav.tasks': 'Ntlawa',
     'nav.subjects': 'Mbirhi',
@@ -662,7 +665,7 @@ function renderResources() {
     : `<div class="empty-state"><div class="icon">🔗</div><h3>${t('resources.emptyTitle')}</h3><p>${t('resources.emptyText')}</p></div>`;
 }
 
-// ── Select Sync ─────────────────────���──────────────────────────
+// ── Select Sync ─────────────────────�����──────────────────────────
 function updateSelects() {
   ['task-subject', 'res-subject'].forEach(id => {
     const el = document.getElementById(id);
