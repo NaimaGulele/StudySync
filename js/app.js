@@ -883,7 +883,7 @@ if (SpeechRecognition) {
     isListening = true;
     document.getElementById('voice-btn').classList.add('recording');
     document.getElementById('voice-indicator').classList.add('active');
-    document.getElementById('voice-status-text').textContent = t('voice.listening') || 'Listening...';
+    document.getElementById('voice-status-text').innerHTML = '<span class="voice-dot"></span> ' + (t('voice.listening') || 'Listening...');
   };
 
   recognition.onresult = (event) => {
@@ -894,17 +894,34 @@ if (SpeechRecognition) {
     }
     transcript = transcript.trim();
     
-    if (event.results[event.results.length - 1].isFinal) {
+    if (event.results[event.results.length - 1].isFinal && transcript) {
       document.getElementById('voice-status-text').textContent = t('voice.processing') || 'Processing...';
       
       if (voiceInputTarget === 'task-name') {
         document.getElementById('task-name').value = transcript;
+        setTimeout(() => {
+          stopVoiceInput();
+          showToast(`✅ ${t('voice.captured') || 'Voice input captured'}`, 'success');
+        }, 500);
+      } else if (voiceInputTarget === 'quick-add') {
+        // Save task directly from voice input
+        setTimeout(() => {
+          const today = new Date().toISOString().split('T')[0];
+          const newTask = {
+            id: Date.now(),
+            name: transcript,
+            subject: state.subjects[0]?.id || 'general',
+            dueDate: today,
+            priority: 'medium',
+            completed: false,
+          };
+          state.tasks.push(newTask);
+          saveState();
+          stopVoiceInput();
+          showToast(`✅ Task saved: "${transcript}"`, 'success');
+          render();
+        }, 500);
       }
-      
-      setTimeout(() => {
-        stopVoiceInput();
-        showToast(`✅ ${t('voice.captured') || 'Voice input captured'}`, 'success');
-      }, 500);
     }
   };
 
