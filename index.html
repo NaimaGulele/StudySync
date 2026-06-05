@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="StudySync" />
+  <meta name="theme-color" content="#66b2ff" />
+  <meta name="description" content="A calm study hub to plan tasks, track subjects, and stay focused on your studies" />
   <title>StudySync — Student Study Planner</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%2366b2ff' width='192' height='192'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>📚</text></svg>" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%2366b2ff' width='180' height='180' rx='40'/><text x='50%' y='50%' font-size='70' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>📚</text></svg>" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -24,6 +32,7 @@
       <div class="lang-switch" aria-label="Language switcher">
         <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
         <button class="lang-btn" onclick="setLanguage('pt')">PT</button>
+        <button class="lang-btn" onclick="setLanguage('ch')">CH</button>
       </div>
     </div>
     <nav>
@@ -293,9 +302,89 @@
   </div>
 </div>
 
+<!-- Install Prompt -->
+<div class="install-prompt" id="install-prompt">
+  <div class="install-prompt-content">
+    <div class="install-icon">📱</div>
+    <div>
+      <div class="install-title">Install StudySync</div>
+      <div class="install-text">Get the app on your phone for quick access</div>
+    </div>
+    <button class="btn btn-primary install-btn" id="install-btn" onclick="installApp()">Install</button>
+    <button class="install-close" onclick="dismissInstall()">×</button>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script src="js/app.js"></script>
+<script>
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      console.log('[App] Service Worker registered:', reg);
+    }).catch(err => {
+      console.log('[App] Service Worker registration failed:', err);
+    });
+  }
+
+  // Handle PWA install prompt
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallPrompt();
+  });
+
+  function showInstallPrompt() {
+    const prompt = document.getElementById('install-prompt');
+    if (prompt && localStorage.getItem('install-dismissed') !== 'true') {
+      prompt.classList.add('show');
+    }
+  }
+
+  function installApp() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('[App] User installed the app');
+          dismissInstall();
+        }
+        deferredPrompt = null;
+      });
+    }
+  }
+
+  function dismissInstall() {
+    const prompt = document.getElementById('install-prompt');
+    if (prompt) {
+      prompt.classList.remove('show');
+      localStorage.setItem('install-dismissed', 'true');
+    }
+  }
+
+  // Show prompt after 5 seconds if not dismissed
+  setTimeout(() => {
+    if (deferredPrompt && localStorage.getItem('install-dismissed') !== 'true') {
+      showInstallPrompt();
+    }
+  }, 5000);
+
+  // iOS prompt (manual)
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    window.addEventListener('load', () => {
+      const prompt = document.getElementById('install-prompt');
+      if (prompt && localStorage.getItem('install-dismissed') !== 'true') {
+        const title = prompt.querySelector('.install-title');
+        const text = prompt.querySelector('.install-text');
+        title.textContent = 'Add to Home Screen';
+        text.textContent = 'Tap Share and select "Add to Home Screen"';
+        showInstallPrompt();
+      }
+    });
+  }
+</script>
 </body>
 </html>
