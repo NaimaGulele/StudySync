@@ -204,6 +204,7 @@ body {
 }
 
 .hero-tag {
+  display: none;
   font-size: 14px;
   color: var(--muted);
   max-width: 560px;
