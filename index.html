@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StudySync — Student Study Planner</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#06101d" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -24,6 +27,11 @@
       <div class="lang-switch" aria-label="Language switcher">
         <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
         <button class="lang-btn" onclick="setLanguage('pt')">PT</button>
+      </div>
+      <div class="accessibility-panel" aria-label="Accessibility controls">
+        <button class="btn btn-sm btn-ghost" type="button" onclick="toggleAccessibilityMode()" id="accessibility-toggle" data-i18n-aria="actions.accessibilityMode" aria-pressed="false">A11y</button>
+        <button class="btn btn-sm btn-ghost" type="button" onclick="toggleTextSize()" id="text-size-toggle" data-i18n-aria="actions.textSize" aria-pressed="false">A+</button>
+        <button class="btn btn-sm btn-ghost" type="button" onclick="toggleReducedMotion()" id="motion-toggle" data-i18n-aria="actions.reducedMotion" aria-pressed="false">🐌</button>
       </div>
     </div>
     <nav>
@@ -56,6 +64,7 @@
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-primary" onclick="openAddTask()" data-i18n="actions.addTask">+ Add Task</button>
+          <button class="btn btn-ghost" onclick="downloadData()" data-i18n="actions.downloadData">⬇️ Download</button>
         </div>
       </div>
 
@@ -158,7 +167,7 @@
 
 <!-- ── Add Task Modal ──────────────────────────────────── -->
 <div class="modal-overlay" id="modal-task">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="modal-task-title">
     <div class="modal-title" id="modal-task-title" data-i18n="modals.addTaskTitle">Add New Task</div>
     <div class="form-group">
       <label data-i18n="forms.taskName">Task Name *</label>
@@ -192,8 +201,8 @@
 
 <!-- ── Add Subject Modal ───────────────────────────────── -->
 <div class="modal-overlay" id="modal-subject">
-  <div class="modal">
-    <div class="modal-title" data-i18n="modals.addSubjectTitle">Add New Subject</div>
+  <div class="modal" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="modal-subject-title">
+    <div class="modal-title" id="modal-subject-title" data-i18n="modals.addSubjectTitle">Add New Subject</div>
     <div class="form-group">
       <label data-i18n="forms.subjectName">Subject Name *</label>
       <input type="text" id="subject-name" data-i18n-placeholder="placeholder.subjectExample" placeholder="e.g., Human-Computer Interaction" />
@@ -220,8 +229,8 @@
 
 <!-- ── Add Resource Modal ──────────────────────────────── -->
 <div class="modal-overlay" id="modal-resource">
-  <div class="modal">
-    <div class="modal-title" data-i18n="modals.addResourceTitle">Add Resource</div>
+  <div class="modal" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="modal-resource-title">
+    <div class="modal-title" id="modal-resource-title" data-i18n="modals.addResourceTitle">Add Resource</div>
     <div class="form-group">
       <label data-i18n="forms.title">Title *</label>
       <input type="text" id="res-title" data-i18n-placeholder="placeholder.resourceTitleExample" placeholder="e.g., Nielsen's 10 Heuristics PDF" />
@@ -245,6 +254,7 @@
       <label data-i18n="forms.url">URL / Description</label>
       <input type="text" id="res-url" data-i18n-placeholder="placeholder.resourceUrlExample" placeholder="https://..." />
     </div>
+    <input type="hidden" id="edit-resource-id" />
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-resource')" data-i18n="actions.cancel">Cancel</button>
       <button class="btn btn-primary" onclick="saveResource()" data-i18n="actions.addResourceBtn">Add Resource</button>
@@ -254,8 +264,8 @@
 
 <!-- ── Profile Modal ─────────────────────────────────────── -->
 <div class="modal-overlay" id="modal-profile">
-  <div class="modal">
-    <div class="modal-title" data-i18n="modals.editProfileTitle">Edit Profile</div>
+  <div class="modal" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="modal-profile-title">
+    <div class="modal-title" id="modal-profile-title" data-i18n="modals.editProfileTitle">Edit Profile</div>
     <div class="form-group">
       <label data-i18n="forms.fullName">Full Name</label>
       <input type="text" id="profile-name" data-i18n-placeholder="placeholder.profileName" placeholder="Your full name" />
@@ -283,8 +293,8 @@
 
 <!-- ── Delete Confirm Modal ────────────────────────────── -->
 <div class="modal-overlay" id="modal-confirm">
-  <div class="modal" style="width:360px">
-    <div class="modal-title" data-i18n="modals.confirmDeleteTitle">Confirm Deletion</div>
+  <div class="modal" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="modal-confirm-title" style="width:360px">
+    <div class="modal-title" id="modal-confirm-title" data-i18n="modals.confirmDeleteTitle">Confirm Deletion</div>
     <p style="color:var(--muted);font-size:14px" data-i18n="modals.confirmDeleteText">Are you sure you want to delete this item? This action cannot be undone.</p>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-confirm')" data-i18n="actions.cancel">Cancel</button>
@@ -294,7 +304,20 @@
 </div>
 
 <!-- Toast -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<div class="install-banner" id="install-banner" role="dialog" aria-live="polite" aria-atomic="true" hidden>
+  <div class="install-banner-content">
+    <div>
+      <strong>Install StudySync</strong>
+      <p>Save this app to your device for quick access from your home screen.</p>
+    </div>
+    <div class="install-banner-actions">
+      <button class="btn btn-sm btn-primary" id="install-btn" type="button">Install</button>
+      <button class="btn btn-sm btn-ghost" id="dismiss-install-btn" type="button">Dismiss</button>
+    </div>
+  </div>
+</div>
 
 <script src="js/app.js"></script>
 </body>

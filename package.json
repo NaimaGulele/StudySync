@@ -1,0 +1,14 @@
+{
+  "name": "studysync",
+  "version": "1.0.0",
+  "description": "StudySync is an accessible study planner web app for organizing tasks, subjects, and resources.",
+  "private": true,
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo \"No build step required for this static app.\"",
+    "test": "echo \"No tests configured.\" && exit 0"
+  },
+  "keywords": ["study", "planner", "HCI", "accessibility", "resources"],
+  "author": "StudySync",
+  "license": "MIT"
+}

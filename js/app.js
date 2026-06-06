@@ -26,12 +26,16 @@ let state = {
   ],
   resources: [
     { id: 1, title: "Nielsen's 10 Usability Heuristics",              subject: "HCI",       type: "Link", url: "https://www.nngroup.com/articles/ten-usability-heuristics/" },
-    { id: 2, title: "Norman — Design of Everyday Things (Summary)",   subject: "HCI",       type: "PDF",  url: "notes/norman.pdf" },
+    { id: 2, title: "Norman — Design of Everyday Things (Summary)",   subject: "HCI",       type: "Link", url: "https://en.wikipedia.org/wiki/The_Design_of_Everyday_Things" },
     { id: 3, title: "SQL Tutorial — W3Schools",                       subject: "Databases", type: "Link", url: "https://www.w3schools.com/sql/" },
   ],
   nextId: 10,
   selectedPriority: "High",
   selectedColor: "#58a6ff",
+  accessibility: {
+    textSize: 'normal',
+    reducedMotion: false,
+  },
   currentPage: "dashboard",
 };
 
@@ -52,6 +56,10 @@ const translations = {
     'actions.addResourceBtn': 'Add Resource',
     'actions.delete': 'Delete',
     'actions.openResource': 'Open ↗',
+    'actions.downloadData': '⬇️ Download',
+    'actions.accessibilityMode': 'Toggle accessible mode',
+    'actions.textSize': 'Toggle larger text',
+    'actions.reducedMotion': 'Toggle reduced motion',
     'filters.allSubjects': 'All Subjects',
     'filters.allPriorities': 'All Priorities',
     'pages.tasksTitle': 'All Tasks',
@@ -120,8 +128,10 @@ const translations = {
     'subjects.statsDonePlural': '✅ {count} done',
     'subjects.statsComplete': '{percent}% complete',
     'modals.addTaskTitle': 'Add New Task',
+    'modals.editTaskTitle': 'Edit Task',
     'modals.addSubjectTitle': 'Add New Subject',
     'modals.addResourceTitle': 'Add Resource',
+    'modals.editResourceTitle': 'Edit Resource',
     'modals.editProfileTitle': 'Edit Profile',
     'modals.confirmDeleteTitle': 'Confirm Deletion',
     'modals.confirmDeleteText': 'Are you sure you want to delete this item? This action cannot be undone.',
@@ -134,8 +144,17 @@ const translations = {
     'toast.taskReopened': '↩️ Task reopened',
     'toast.subjectAdded': '📚 Subject added!',
     'toast.resourceAdded': '🔗 Resource added!',
+    'toast.resourceUpdated': '✏️ Resource updated!',
+    'toast.accessibilityEnabled': '🔆 Accessible mode enabled',
+    'toast.accessibilityDisabled': '🌙 Accessible mode disabled',
     'toast.deleted': '🗑️ Deleted successfully',
     'toast.profileUpdated': '👤 Profile updated!',
+    'toast.appInstalled': '✅ App installed!',
+    'toast.textSizeEnabled': '🔎 Larger text enabled',
+    'toast.textSizeNormal': '🔠 Normal text size',
+    'toast.reducedMotionEnabled': '🐌 Reduced motion enabled',
+    'toast.reducedMotionDisabled': '⚡ Reduced motion disabled',
+    'toast.dataDownloaded': '📥 Data exported!',
     'toast.taskNameRequired': '⚠️ Please enter a task name',
     'toast.subjectRequired': '⚠️ Please select a subject',
     'toast.dueDateRequired': '⚠️ Please set a due date',
@@ -160,6 +179,10 @@ const translations = {
     'actions.addResourceBtn': 'Adicionar Recurso',
     'actions.delete': 'Excluir',
     'actions.openResource': 'Abrir ↗',
+    'actions.downloadData': '⬇️ Baixar',
+    'actions.accessibilityMode': 'Alternar modo acessível',
+    'actions.textSize': 'Alternar texto maior',
+    'actions.reducedMotion': 'Alternar movimento reduzido',
     'filters.allSubjects': 'Todas as Disciplinas',
     'filters.allPriorities': 'Todas as Prioridades',
     'pages.tasksTitle': 'Todas as Tarefas',
@@ -228,8 +251,10 @@ const translations = {
     'subjects.statsDonePlural': '✅ {count} concluídas',
     'subjects.statsComplete': '{percent}% concluído',
     'modals.addTaskTitle': 'Adicionar Nova Tarefa',
+    'modals.editTaskTitle': 'Editar Tarefa',
     'modals.addSubjectTitle': 'Adicionar Nova Disciplina',
     'modals.addResourceTitle': 'Adicionar Recurso',
+    'modals.editResourceTitle': 'Editar Recurso',
     'modals.editProfileTitle': 'Editar Perfil',
     'modals.confirmDeleteTitle': 'Confirmar Exclusão',
     'modals.confirmDeleteText': 'Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita.',
@@ -242,8 +267,17 @@ const translations = {
     'toast.taskReopened': '↩️ Tarefa reaberta',
     'toast.subjectAdded': '📚 Disciplina adicionada!',
     'toast.resourceAdded': '🔗 Recurso adicionado!',
+    'toast.resourceUpdated': '✏️ Recurso atualizado!',
+    'toast.accessibilityEnabled': '🔆 Modo acessível ativado',
+    'toast.accessibilityDisabled': '🌙 Modo acessível desativado',
     'toast.deleted': '🗑️ Excluído com sucesso',
     'toast.profileUpdated': '👤 Perfil atualizado!',
+    'toast.appInstalled': '✅ App instalado!',
+    'toast.dataDownloaded': '📥 Dados exportados!',
+    'toast.textSizeEnabled': '🔎 Texto maior habilitado',
+    'toast.textSizeNormal': '🔠 Tamanho de texto normal',
+    'toast.reducedMotionEnabled': '🐌 Movimento reduzido ativado',
+    'toast.reducedMotionDisabled': '⚡ Movimento reduzido desativado',
     'toast.taskNameRequired': '⚠️ Digite o nome da tarefa',
     'toast.subjectRequired': '⚠️ Selecione uma disciplina',
     'toast.dueDateRequired': '⚠️ Defina uma data de entrega',
@@ -312,6 +346,7 @@ function render() {
   renderResources();
   updateSelects();
   renderFilters();
+  updateAccessibilityControls();
 }
 
 // ── Stats ──────────────────────────────────────────────────────
@@ -359,6 +394,91 @@ function updateLanguageLabels() {
   });
 }
 
+function toggleTextSize() {
+  state.accessibility.textSize = state.accessibility.textSize === 'normal' ? 'large' : 'normal';
+  document.body.classList.toggle('large-text', state.accessibility.textSize === 'large');
+  const btn = document.getElementById('text-size-toggle');
+  if (btn) btn.setAttribute('aria-pressed', state.accessibility.textSize === 'large');
+  showToast(state.accessibility.textSize === 'large' ? t('toast.textSizeEnabled') : t('toast.textSizeNormal'), 'success');
+}
+
+function toggleReducedMotion() {
+  state.accessibility.reducedMotion = !state.accessibility.reducedMotion;
+  document.body.classList.toggle('reduce-motion', state.accessibility.reducedMotion);
+  const btn = document.getElementById('motion-toggle');
+  if (btn) btn.setAttribute('aria-pressed', state.accessibility.reducedMotion);
+  showToast(state.accessibility.reducedMotion ? t('toast.reducedMotionEnabled') : t('toast.reducedMotionDisabled'), 'success');
+}
+
+function updateAccessibilityControls() {
+  document.body.classList.toggle('large-text', state.accessibility.textSize === 'large');
+  document.body.classList.toggle('reduce-motion', state.accessibility.reducedMotion);
+  const textBtn = document.getElementById('text-size-toggle');
+  const motionBtn = document.getElementById('motion-toggle');
+  if (textBtn) textBtn.setAttribute('aria-pressed', state.accessibility.textSize === 'large');
+  if (motionBtn) motionBtn.setAttribute('aria-pressed', state.accessibility.reducedMotion);
+}
+
+let deferredInstallPrompt = null;
+
+function showInstallBanner() {
+  const banner = document.getElementById('install-banner');
+  if (!banner || deferredInstallPrompt === null) return;
+  banner.hidden = false;
+}
+
+function hideInstallBanner() {
+  const banner = document.getElementById('install-banner');
+  if (!banner) return;
+  banner.hidden = true;
+}
+
+function handleInstallPrompt() {
+  const installBtn = document.getElementById('install-btn');
+  const dismissBtn = document.getElementById('dismiss-install-btn');
+  if (!installBtn || !dismissBtn) return;
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice;
+    if (choice.outcome === 'accepted') {
+      showToast(t('toast.appInstalled'), 'success');
+    }
+    deferredInstallPrompt = null;
+    hideInstallBanner();
+  });
+
+  dismissBtn.addEventListener('click', () => {
+    hideInstallBanner();
+    localStorage.setItem('install-banner-dismissed', 'true');
+  });
+}
+
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      console.warn('Service worker registration failed');
+    });
+  }
+}
+
+function registerInstallPrompt() {
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    if (localStorage.getItem('install-banner-dismissed') !== 'true') {
+      showInstallBanner();
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    hideInstallBanner();
+    showToast(t('toast.appInstalled'), 'success');
+  });
+}
+
 function getGreeting(name) {
   const hour = new Date().getHours();
   if (hour < 12) return t('greeting.morning').replace('{name}', name);
@@ -394,9 +514,9 @@ function taskCard(t, showDelete = true) {
 
   return `
     <div class="task-item ${t.done ? 'done' : ''}" id="task-${t.id}">
-      <div class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask(${t.id})">
+      <button class="task-check ${t.done ? 'checked' : ''}" onclick="toggleTask(${t.id})" aria-label="${t.done ? 'Unmark' : 'Mark'} task ${t.name}">
         ${t.done ? '✓' : ''}
-      </div>
+      </button>
       <div style="flex:1;min-width:0">
         <div class="task-name">${t.name}</div>
         <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
@@ -406,8 +526,8 @@ function taskCard(t, showDelete = true) {
         </div>
       </div>
       <div class="task-actions">
-        <button class="btn btn-ghost btn-sm" onclick="editTask(${t.id})">✏️</button>
-        ${showDelete ? `<button class="btn btn-danger btn-sm" onclick="confirmDelete('task',${t.id})">🗑️</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="editTask(${t.id})" aria-label="Edit task ${t.name}">✏️</button>
+        ${showDelete ? `<button class="btn btn-danger btn-sm" onclick="confirmDelete('task',${t.id})" aria-label="Delete task ${t.name}">🗑️</button>` : ''}
       </div>
     </div>`;
 }
@@ -507,7 +627,7 @@ function renderSubjects() {
       <div class="color-bar" style="background:${s.color}"></div>
       <div style="display:flex;justify-content:space-between;align-items:start;margin-top:8px">
         <div class="subject-name">${s.name}</div>
-        <button class="btn btn-danger btn-sm" onclick="confirmDelete('subject',${s.id})" style="opacity:0.6">🗑️</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete('subject',${s.id})" aria-label="Delete subject ${s.name}" style="opacity:0.6">🗑️</button>
       </div>
       <div class="subject-stats">
         <span>${total === 1 ? t('subjects.statsTasksSingular') : t('subjects.statsTasksPlural').replace('{count}', total)}</span>
@@ -528,25 +648,25 @@ function renderResources() {
   if (!el) return;
   const icons = { Link: '🔗', Note: '📝', PDF: '📄', Video: '🎥' };
   el.innerHTML = state.resources.length
-    ? `<div style="display:flex;flex-direction:column;gap:10px">` +
-        state.resources.map(r => {
-          const sub   = state.subjects.find(s => s.name === r.subject);
-          const color = sub ? sub.color : '#58a6ff';
-          return `<div class="task-item">
-            <span style="font-size:22px">${icons[r.type] || '📎'}</span>
-            <div style="flex:1">
-              <div style="font-size:14px;font-weight:500">${r.title}</div>
-              <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-                ${r.subject ? `<span class="badge" style="background:${color}22;color:${color}">${r.subject}</span>` : ''}
-                <span class="badge" style="background:var(--surface2);color:var(--muted)">${t('resourceTypes.' + r.type.toLowerCase()) || r.type}</span>
-                ${r.url ? `<a href="${r.url}" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none">${t('actions.openResource')}</a>` : ''}
-              </div>
+    ? `<div style="display:flex;flex-direction:column;gap:10px">${state.resources.map(r => {
+        const sub   = state.subjects.find(s => s.name === r.subject);
+        const color = sub ? sub.color : '#58a6ff';
+        return `<div class="task-item">
+          <span style="font-size:22px">${icons[r.type] || '📎'}</span>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500">${r.title}</div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+              ${r.subject ? `<span class="badge" style="background:${color}22;color:${color}">${r.subject}</span>` : ''}
+              <span class="badge" style="background:var(--surface2);color:var(--muted)">${t('resourceTypes.' + r.type.toLowerCase()) || r.type}</span>
+              ${r.url ? `<a href="${r.url}" target="_blank" rel="noreferrer noopener" style="font-size:12px;color:var(--accent);text-decoration:none" aria-label="${t('actions.openResource')} ${r.title}">${t('actions.openResource')}</a>` : ''}
             </div>
-            <div class="task-actions">
-              <button class="btn btn-danger btn-sm" onclick="confirmDelete('resource',${r.id})">🗑️</button>
-            </div>
-          </div>`;
-        }).join('') + `</div>`
+          </div>
+          <div class="task-actions">
+            <button class="btn btn-ghost btn-sm" onclick="editResource(${r.id})" aria-label="Edit resource ${r.title}">✏️</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDelete('resource',${r.id})" aria-label="Delete resource ${r.title}">🗑️</button>
+          </div>
+        </div>`;
+      }).join('')}</div>`
     : `<div class="empty-state"><div class="icon">🔗</div><h3>${t('resources.emptyTitle')}</h3><p>${t('resources.emptyText')}</p></div>`;
 }
 
@@ -582,16 +702,16 @@ function openAddTask() {
 }
 
 function editTask(id) {
-  const task = state.tasks.find(t => t.id === id);
+  const task = state.tasks.find(item => item.id === id);
   if (!task) return;
   document.getElementById('modal-task-title').textContent = t('modals.editTaskTitle');
   document.getElementById('task-name').value              = task.name;
   document.getElementById('task-due').value               = task.due;
   document.getElementById('edit-task-id').value           = id;
-  state.selectedPriority = t.priority;
+  state.selectedPriority = task.priority;
   updatePriorityBtns();
   updateSelects();
-  setTimeout(() => { document.getElementById('task-subject').value = t.subject; }, 50);
+  setTimeout(() => { document.getElementById('task-subject').value = task.subject; }, 50);
   openModal('modal-task');
 }
 
@@ -606,9 +726,11 @@ function saveTask() {
   if (!due)     { showToast(t('toast.dueDateRequired'),    'error');   return; }
 
   if (editId) {
-    const t = state.tasks.find(t => t.id == editId);
-    Object.assign(t, { name, subject, due, priority: state.selectedPriority });
-    showToast(t('toast.taskUpdated'), 'success');
+    const existingTask = state.tasks.find(task => task.id == editId);
+    if (existingTask) {
+      Object.assign(existingTask, { name, subject, due, priority: state.selectedPriority });
+      showToast(t('toast.taskUpdated'), 'success');
+    }
   } else {
     state.tasks.push({ id: state.nextId++, name, subject, due, priority: state.selectedPriority, done: false });
     showToast(t('toast.taskAdded'), 'success');
@@ -638,6 +760,34 @@ function openProfileEditor() {
   document.getElementById('profile-email').value = state.user.email;
   document.getElementById('profile-bio').value = state.user.bio;
   openModal('modal-profile');
+}
+
+function toggleAccessibilityMode() {
+  const enabled = document.body.classList.toggle('high-contrast');
+  const toggle = document.getElementById('accessibility-toggle');
+  if (toggle) toggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+  showToast(enabled ? t('toast.accessibilityEnabled') : t('toast.accessibilityDisabled'), 'success');
+}
+
+function downloadData() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    user: state.user,
+    tasks: state.tasks,
+    subjects: state.subjects,
+    resources: state.resources,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const fileName = `studysync-export-${new Date().toISOString().slice(0, 10)}.json`;
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+  showToast(t('toast.dataDownloaded'), 'success');
 }
 
 function saveProfile() {
@@ -691,8 +841,24 @@ function saveSubject() {
 
 // ── Resource Actions ───────────────────────────────────────────
 function openAddResource() {
+  document.getElementById('modal-resource-title').textContent = t('modals.addResourceTitle');
   document.getElementById('res-title').value = '';
   document.getElementById('res-url').value   = '';
+  document.getElementById('res-type').value  = 'Link';
+  document.getElementById('edit-resource-id').value = '';
+  updateSelects();
+  openModal('modal-resource');
+}
+
+function editResource(id) {
+  const resource = state.resources.find(item => item.id === id);
+  if (!resource) return;
+  document.getElementById('modal-resource-title').textContent = t('modals.editResourceTitle');
+  document.getElementById('res-title').value = resource.title;
+  document.getElementById('res-url').value   = resource.url || '';
+  document.getElementById('res-type').value  = resource.type || 'Link';
+  document.getElementById('res-subject').value = resource.subject || '';
+  document.getElementById('edit-resource-id').value = id;
   updateSelects();
   openModal('modal-resource');
 }
@@ -700,14 +866,28 @@ function openAddResource() {
 function saveResource() {
   const title = document.getElementById('res-title').value.trim();
   if (!title) { showToast(t('toast.titleRequired'), 'error'); return; }
-  state.resources.push({
-    id:      state.nextId++,
-    title,
-    subject: document.getElementById('res-subject').value,
-    type:    document.getElementById('res-type').value,
-    url:     document.getElementById('res-url').value.trim(),
-  });
-  showToast(t('toast.resourceAdded'), 'success');
+  const resourceId = document.getElementById('edit-resource-id').value;
+  if (resourceId) {
+    const existingResource = state.resources.find(r => r.id == resourceId);
+    if (existingResource) {
+      Object.assign(existingResource, {
+        title,
+        subject: document.getElementById('res-subject').value,
+        type:    document.getElementById('res-type').value,
+        url:     document.getElementById('res-url').value.trim(),
+      });
+      showToast(t('toast.resourceUpdated'), 'success');
+    }
+  } else {
+    state.resources.push({
+      id:      state.nextId++,
+      title,
+      subject: document.getElementById('res-subject').value,
+      type:    document.getElementById('res-type').value,
+      url:     document.getElementById('res-url').value.trim(),
+    });
+    showToast(t('toast.resourceAdded'), 'success');
+  }
   closeModal('modal-resource');
   render();
 }
@@ -737,8 +917,19 @@ document.getElementById('confirm-delete-btn').onclick = function () {
 };
 
 // ── Modal Helpers ──────────────────────────────────────────────
-function openModal(id)  { document.getElementById(id).classList.add('open');    }
+function openModal(id)  {
+  const overlay = document.getElementById(id);
+  overlay.classList.add('open');
+  const dialog = overlay.querySelector('.modal');
+  if (dialog) dialog.focus();
+}
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(o => o.classList.remove('open'));
+  }
+});
 
 document.querySelectorAll('.modal-overlay').forEach(o => {
   o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
@@ -755,4 +946,7 @@ function showToast(msg, type = '') {
 
 // ── Init ───────────────────────────────────────────────────────
 updateColorBtns();
+handleInstallPrompt();
+registerInstallPrompt();
+registerServiceWorker();
 render();
