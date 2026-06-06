@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="StudySync — A calm, organized study planning app with inclusive design and HCI principles" />
+  <meta name="theme-color" content="#06101d" />
   <title>StudySync — Student Study Planner</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
@@ -161,17 +163,17 @@
   <div class="modal">
     <div class="modal-title" id="modal-task-title" data-i18n="modals.addTaskTitle">Add New Task</div>
     <div class="form-group">
-      <label data-i18n="forms.taskName">Task Name *</label>
-      <input type="text" id="task-name" data-i18n-placeholder="placeholder.taskExample" placeholder="e.g., Study Chapter 5 — HCI" />
+      <label for="task-name" data-i18n="forms.taskName">Task Name *</label>
+      <input type="text" id="task-name" data-i18n-placeholder="placeholder.taskExample" placeholder="e.g., Study Chapter 5 — HCI" required aria-required="true" />
     </div>
     <div class="two-col">
       <div class="form-group">
-        <label data-i18n="forms.subject">Subject *</label>
-        <select id="task-subject"><option value="" data-i18n="filters.selectSubject">Select subject...</option></select>
+        <label for="task-subject" data-i18n="forms.subject">Subject *</label>
+        <select id="task-subject" required aria-required="true"><option value="" data-i18n="filters.selectSubject">Select subject...</option></select>
       </div>
       <div class="form-group">
-        <label data-i18n="forms.dueDate">Due Date *</label>
-        <input type="date" id="task-due" />
+        <label for="task-due" data-i18n="forms.dueDate">Due Date *</label>
+        <input type="date" id="task-due" required aria-required="true" />
       </div>
     </div>
     <div class="form-group">
@@ -195,8 +197,8 @@
   <div class="modal">
     <div class="modal-title" data-i18n="modals.addSubjectTitle">Add New Subject</div>
     <div class="form-group">
-      <label data-i18n="forms.subjectName">Subject Name *</label>
-      <input type="text" id="subject-name" data-i18n-placeholder="placeholder.subjectExample" placeholder="e.g., Human-Computer Interaction" />
+      <label for="subject-name" data-i18n="forms.subjectName">Subject Name *</label>
+      <input type="text" id="subject-name" data-i18n-placeholder="placeholder.subjectExample" placeholder="e.g., Human-Computer Interaction" required aria-required="true" />
     </div>
     <div class="form-group">
       <label data-i18n="forms.color">Color</label>
@@ -223,16 +225,16 @@
   <div class="modal">
     <div class="modal-title" data-i18n="modals.addResourceTitle">Add Resource</div>
     <div class="form-group">
-      <label data-i18n="forms.title">Title *</label>
-      <input type="text" id="res-title" data-i18n-placeholder="placeholder.resourceTitleExample" placeholder="e.g., Nielsen's 10 Heuristics PDF" />
+      <label for="res-title" data-i18n="forms.title">Title *</label>
+      <input type="text" id="res-title" data-i18n-placeholder="placeholder.resourceTitleExample" placeholder="e.g., Nielsen's 10 Heuristics PDF" required aria-required="true" />
     </div>
     <div class="two-col">
       <div class="form-group">
-        <label data-i18n="forms.subject">Subject</label>
+        <label for="res-subject" data-i18n="forms.subject">Subject</label>
         <select id="res-subject"><option value="" data-i18n="filters.selectSubject">Select subject...</option></select>
       </div>
       <div class="form-group">
-        <label data-i18n="forms.type">Type</label>
+        <label for="res-type" data-i18n="forms.type">Type</label>
         <select id="res-type">
           <option value="Link" data-i18n="resourceTypes.link">🔗 Link</option>
           <option value="Note" data-i18n="resourceTypes.note">📝 Note</option>
@@ -242,7 +244,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label data-i18n="forms.url">URL / Description</label>
+      <label for="res-url" data-i18n="forms.url">URL / Description</label>
       <input type="text" id="res-url" data-i18n-placeholder="placeholder.resourceUrlExample" placeholder="https://..." />
     </div>
     <div class="modal-actions">
@@ -257,21 +259,21 @@
   <div class="modal">
     <div class="modal-title" data-i18n="modals.editProfileTitle">Edit Profile</div>
     <div class="form-group">
-      <label data-i18n="forms.fullName">Full Name</label>
+      <label for="profile-name" data-i18n="forms.fullName">Full Name</label>
       <input type="text" id="profile-name" data-i18n-placeholder="placeholder.profileName" placeholder="Your full name" />
     </div>
     <div class="two-col">
       <div class="form-group">
-        <label data-i18n="forms.role">Role</label>
+        <label for="profile-role" data-i18n="forms.role">Role</label>
         <input type="text" id="profile-role" data-i18n-placeholder="placeholder.profileRole" placeholder="Student, Designer, etc." />
       </div>
       <div class="form-group">
-        <label data-i18n="forms.email">Email</label>
+        <label for="profile-email" data-i18n="forms.email">Email</label>
         <input type="email" id="profile-email" data-i18n-placeholder="placeholder.profileEmail" placeholder="you@example.com" />
       </div>
     </div>
     <div class="form-group">
-      <label data-i18n="forms.bio">Bio</label>
+      <label for="profile-bio" data-i18n="forms.bio">Bio</label>
       <textarea id="profile-bio" rows="3" data-i18n-placeholder="placeholder.profileBio" placeholder="Tell us about your study style"></textarea>
     </div>
     <div class="modal-actions">
@@ -289,6 +291,32 @@
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-confirm')" data-i18n="actions.cancel">Cancel</button>
       <button class="btn btn-danger" id="confirm-delete-btn" data-i18n="actions.delete">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── App Download Modal ─────────────────────────────────── -->
+<div class="modal-overlay" id="modal-download" role="dialog" aria-labelledby="download-title" aria-describedby="download-desc">
+  <div class="modal download-modal">
+    <button class="modal-close-btn" onclick="closeModal('modal-download')" aria-label="Close download prompt">×</button>
+    <div style="text-align:center">
+      <div style="font-size:48px;margin-bottom:12px">📱</div>
+      <h2 class="modal-title" id="download-title" style="text-align:center">Get StudySync on Your Device</h2>
+      <p id="download-desc" style="color:var(--muted);font-size:14px;margin:12px 0 24px;line-height:1.5">Download our app for a smoother study experience on mobile, tablet, or desktop.</p>
+    </div>
+    <div class="download-buttons">
+      <a href="https://apps.apple.com/studysync" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;text-decoration:none;justify-content:center;margin-bottom:10px">
+        <span>📱 iOS App</span>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.studysync" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;text-decoration:none;justify-content:center;margin-bottom:10px">
+        <span>🤖 Android App</span>
+      </a>
+      <a href="https://apps.microsoft.com/store/apps/studysync" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;text-decoration:none;justify-content:center">
+        <span>💻 Windows App</span>
+      </a>
+    </div>
+    <div style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="closeModal('modal-download'); localStorage.setItem('hideDownloadPrompt', 'true')" style="width:100%;justify-content:center" data-i18n="actions.remindLater">Remind me later</button>
     </div>
   </div>
 </div>

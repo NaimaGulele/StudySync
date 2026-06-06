@@ -1,0 +1,30 @@
+{
+  "name": "studysync",
+  "version": "1.0.0",
+  "description": "StudySync — A calm, organized study planning and task management app built with inclusive design and HCI principles",
+  "author": "StudySync Team",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -o",
+    "build": "echo 'StudySync is a static web app'",
+    "start": "npx http-server . -p 8080"
+  },
+  "keywords": [
+    "study-planner",
+    "task-management",
+    "student-app",
+    "accessibility",
+    "wcag",
+    "inclusive-design",
+    "hci-principles"
+  ],
+  "homepage": "./",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NaimaGulele/StudySync"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
