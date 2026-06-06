@@ -686,6 +686,21 @@ select option { background: var(--bg); }
 }
 .install-cta .btn { min-height: 36px; padding: 8px 12px; font-size: 14px; }
 .install-cta.hidden { display: none; }
+.install-help {
+  position: fixed;
+  right: 20px;
+  bottom: 160px;
+  max-width: 320px;
+  background: linear-gradient(180deg, rgba(10,18,28,0.98), rgba(16,24,36,0.98));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: var(--text);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.install-help.hidden { display: none; }
 .footer-actions { display:flex;align-items:center;gap:12px }
 .footer-credit { color:var(--muted); font-size:13px; text-decoration:none }
 

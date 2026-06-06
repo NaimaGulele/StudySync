@@ -2,9 +2,12 @@ const CACHE_NAME = 'studysync-v1';
 const ASSETS = [
   '/',
   '/index.html',
+  '/manifest.json',
   '/css/style.css',
   '/js/app.js',
   '/downloads/icon.png',
+  '/downloads/icon-192.png',
+  '/downloads/icon-512.png',
   '/downloads/studysync-app.zip',
   '/downloads/studysync-windows.zip'
 ];

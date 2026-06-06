@@ -784,40 +784,81 @@ render();
 
 // ── PWA install handling ───────────────────────────────────────
 let deferredInstallPrompt = null;
+const installCTA = document.getElementById('install-cta');
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the mini-infobar from appearing on mobile
   e.preventDefault();
   deferredInstallPrompt = e;
+  showInstallCTA();
 });
 
+window.addEventListener('appinstalled', () => {
+  showToast('StudySync installed!');
+  hideInstallCTA();
+  deferredInstallPrompt = null;
+});
+
+function showInstallCTA() {
+  const el = document.getElementById('install-cta');
+  const help = document.getElementById('install-help');
+  if (el) el.classList.remove('hidden');
+  if (help) help.classList.add('hidden');
+}
+
+function hideInstallCTA() {
+  const el = document.getElementById('install-cta');
+  if (el) el.classList.add('hidden');
+}
+
 function promptInstall(kind) {
-  // If there's a saved beforeinstallprompt event, show it
   if (deferredInstallPrompt) {
     deferredInstallPrompt.prompt();
     deferredInstallPrompt.userChoice.then(choice => {
       if (choice.outcome === 'accepted') {
-        showToast('App installed', 'success');
+        showToast('StudySync installed!', 'success');
       } else {
-        showToast('Installation dismissed');
+        showToast('Installation canceled');
       }
       deferredInstallPrompt = null;
+      hideInstallCTA();
     });
     return;
   }
 
-  // Fallbacks: if no install prompt is available, for "app" open root, for desktop download ZIP
-  if (kind === 'app') {
-    showToast('Open the browser menu and choose "Install app" to add StudySync to your device.');
-    window.location.href = '/';
-  } else if (kind === 'desktop') {
-    // Trigger download as fallback
-    window.location.href = '/downloads/studysync-windows.zip';
+  showManualInstallInstructions();
+}
+
+function isIos() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function showManualInstallInstructions() {
+  const help = document.getElementById('install-help');
+  if (help) {
+    if (isIos()) {
+      help.textContent = 'Open Safari Share → Add to Home Screen to install StudySync.';
+    } else {
+      help.textContent = 'Use your browser menu and choose Add to Home Screen or Install app.';
+    }
+    help.classList.remove('hidden');
+    hideInstallCTA();
+    return;
   }
+
+  if (isIos()) {
+    showToast('Use Safari Share → Add to Home Screen to install StudySync.');
+  } else {
+    showToast('Use your browser menu and choose Add to Home Screen or Install app.');
+  }
+}
+
+function hideInstallHelp() {
+  const help = document.getElementById('install-help');
+  if (help) help.classList.add('hidden');
 }
 
 // Register service worker for PWA support
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW register failed:', err));
+  navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(err => console.warn('SW register failed:', err));
 }
 
 // ── Persistence: resources to localStorage ──────────────────────
