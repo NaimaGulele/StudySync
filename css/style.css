@@ -641,3 +641,73 @@ select option { background: var(--bg); }
   .sidebar { box-shadow: none; }
 }
 
+/* ── Site Footer (Downloads) ───────────────────────────────── */
+.site-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(8,12,18,0.98), rgba(12,18,26,0.98));
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  z-index: 60;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.45);
+}
+.site-footer .footer-inner { display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1200px;margin:0 auto; }
+.download-title { font-weight:700;color:var(--muted);font-size:13px;margin-bottom:6px }
+.download-list { list-style:none; display:flex;gap:8px; align-items:center; }
+.download-btn {
+  background: linear-gradient(135deg, rgba(102,178,255,0.12), rgba(139,124,255,0.08));
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  font-weight:700;
+  font-size:13px;
+}
+.download-btn .dl-ico { margin-right:8px; font-size:14px; display:inline-block; }
+.download-btn:hover { border-color: rgba(168,208,255,0.18); transform: translateY(-2px); }
+
+/* Install CTA / Banner */
+.install-cta {
+  position: fixed;
+  right: 20px;
+  bottom: 84px; /* above footer */
+  background: linear-gradient(180deg, rgba(10,18,28,0.98), rgba(16,24,36,0.98));
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 120;
+}
+.install-cta .btn { min-height: 36px; padding: 8px 12px; font-size: 14px; }
+.install-cta.hidden { display: none; }
+.install-help {
+  position: fixed;
+  right: 20px;
+  bottom: 160px;
+  max-width: 320px;
+  background: linear-gradient(180deg, rgba(10,18,28,0.98), rgba(16,24,36,0.98));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: var(--text);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.install-help.hidden { display: none; }
+.footer-actions { display:flex;align-items:center;gap:12px }
+.footer-credit { color:var(--muted); font-size:13px; text-decoration:none }
+
+@media (max-width:800px) {
+  .site-footer .footer-inner { flex-direction:column; align-items:stretch; }
+  .download-list { flex-wrap:wrap; }
+  .footer-actions { justify-content:space-between; }
+}
+
+

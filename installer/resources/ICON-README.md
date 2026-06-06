@@ -1,0 +1,1 @@
+Place platform-specific icon files here (ICO for Windows, ICNS for macOS, PNG for general use).
