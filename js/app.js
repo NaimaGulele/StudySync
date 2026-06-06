@@ -532,18 +532,19 @@ function renderResources() {
         state.resources.map(r => {
           const sub   = state.subjects.find(s => s.name === r.subject);
           const color = sub ? sub.color : '#58a6ff';
-          return `<div class="task-item">
-            <span style="font-size:22px">${icons[r.type] || '📎'}</span>
+          return `<div class="task-item" role="listitem">
+            <span style="font-size:22px" aria-hidden="true">${icons[r.type] || '📎'}</span>
             <div style="flex:1">
               <div style="font-size:14px;font-weight:500">${r.title}</div>
               <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
                 ${r.subject ? `<span class="badge" style="background:${color}22;color:${color}">${r.subject}</span>` : ''}
                 <span class="badge" style="background:var(--surface2);color:var(--muted)">${t('resourceTypes.' + r.type.toLowerCase()) || r.type}</span>
-                ${r.url ? `<a href="${r.url}" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none">${t('actions.openResource')}</a>` : ''}
+                ${r.url ? `<a href="${r.url}" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none" aria-label="Open resource: ${r.title}">${t('actions.openResource')}</a>` : ''}
               </div>
             </div>
             <div class="task-actions">
-              <button class="btn btn-danger btn-sm" onclick="confirmDelete('resource',${r.id})">🗑️</button>
+              <button class="btn btn-ghost btn-sm" onclick="editResource(${r.id})" aria-label="Edit resource ${r.title}">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="confirmDelete('resource',${r.id})" aria-label="Delete resource ${r.title}">🗑️</button>
             </div>
           </div>`;
         }).join('') + `</div>`
@@ -693,6 +694,7 @@ function saveSubject() {
 function openAddResource() {
   document.getElementById('res-title').value = '';
   document.getElementById('res-url').value   = '';
+  document.getElementById('edit-resource-id').value = '';
   updateSelects();
   openModal('modal-resource');
 }
@@ -700,16 +702,37 @@ function openAddResource() {
 function saveResource() {
   const title = document.getElementById('res-title').value.trim();
   if (!title) { showToast(t('toast.titleRequired'), 'error'); return; }
-  state.resources.push({
-    id:      state.nextId++,
+  const editId = document.getElementById('edit-resource-id').value;
+  const payload = {
     title,
     subject: document.getElementById('res-subject').value,
     type:    document.getElementById('res-type').value,
     url:     document.getElementById('res-url').value.trim(),
-  });
-  showToast(t('toast.resourceAdded'), 'success');
+  };
+
+  if (editId) {
+    const r = state.resources.find(r => r.id == editId);
+    if (r) Object.assign(r, payload);
+    showToast(t('toast.resourceAdded'), 'success');
+  } else {
+    state.resources.push(Object.assign({ id: state.nextId++ }, payload));
+    showToast(t('toast.resourceAdded'), 'success');
+  }
+  document.getElementById('edit-resource-id').value = '';
   closeModal('modal-resource');
+  saveResourcesToStorage();
   render();
+}
+
+function editResource(id) {
+  const r = state.resources.find(r => r.id === id);
+  if (!r) return;
+  document.getElementById('res-title').value = r.title || '';
+  document.getElementById('res-url').value   = r.url || '';
+  document.getElementById('res-type').value  = r.type || 'Link';
+  document.getElementById('res-subject').value = r.subject || '';
+  document.getElementById('edit-resource-id').value = r.id;
+  openModal('modal-resource');
 }
 
 // ── Delete ─────────────────────────────────────────────────────
@@ -733,6 +756,7 @@ document.getElementById('confirm-delete-btn').onclick = function () {
   showToast(t('toast.deleted'), 'success');
   closeModal('modal-confirm');
   pendingDelete = null;
+  saveResourcesToStorage();
   render();
 };
 
@@ -755,4 +779,28 @@ function showToast(msg, type = '') {
 
 // ── Init ───────────────────────────────────────────────────────
 updateColorBtns();
+loadResourcesFromStorage();
 render();
+
+// ── Persistence: resources to localStorage ──────────────────────
+function saveResourcesToStorage() {
+  try {
+    localStorage.setItem('studysync_resources_v1', JSON.stringify(state.resources));
+  } catch (e) {
+    console.warn('Could not save resources to localStorage', e);
+  }
+}
+
+function loadResourcesFromStorage() {
+  try {
+    const raw = localStorage.getItem('studysync_resources_v1');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        state.resources = parsed;
+      }
+    }
+  } catch (e) {
+    console.warn('Could not load resources from localStorage', e);
+  }
+}

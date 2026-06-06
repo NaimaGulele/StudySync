@@ -6,6 +6,7 @@
   <title>StudySync — Student Study Planner</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="/downloads/icon.png" />
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -247,6 +248,7 @@
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-resource')" data-i18n="actions.cancel">Cancel</button>
+      <input type="hidden" id="edit-resource-id" />
       <button class="btn btn-primary" onclick="saveResource()" data-i18n="actions.addResourceBtn">Add Resource</button>
     </div>
   </div>
@@ -296,6 +298,41 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- ── Site Footer: Downloads & quick links (accessibility + HCI principles) -->
+<footer class="site-footer" role="contentinfo" aria-label="Download StudySync apps and quick resources">
+  <div class="footer-inner">
+    <div class="download-group" aria-hidden="false">
+      <div class="download-title">Get the app</div>
+        <ul class="download-list" role="list">
+          <li>
+            <a class="download-btn" href="/downloads/studysync-app.zip" download="StudySync-App.zip" aria-label="Download desktop app for StudySync">
+              <span class="dl-ico">📦</span> App (ZIP)
+            </a>
+          </li>
+          <li>
+            <a class="download-btn" href="https://play.google.com/store/apps/details?id=studysync" target="_blank" rel="noopener" aria-label="Open StudySync on Google Play">
+              <span class="dl-ico">🤖</span> Android
+            </a>
+          </li>
+          <li>
+            <a class="download-btn" href="https://apps.apple.com/app/studysync" target="_blank" rel="noopener" aria-label="Open StudySync on the App Store">
+              <span class="dl-ico">🍎</span> iOS
+            </a>
+          </li>
+          <li>
+            <a class="download-btn" href="/downloads/studysync-windows.zip" download="StudySync-Windows.zip" aria-label="Download StudySync for Windows">
+              <span class="dl-ico">🪟</span> Windows
+            </a>
+          </li>
+        </ul>
+    </div>
+    <div class="footer-actions">
+        <a class="footer-credit" href="#" aria-hidden="true">StudySync</a>
+    </div>
+  </div>
+</footer>
+
 <script src="js/app.js"></script>
 </body>
 </html>
+
