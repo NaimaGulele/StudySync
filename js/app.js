@@ -26,7 +26,7 @@ let state = {
   ],
   resources: [
     { id: 1, title: "Nielsen's 10 Usability Heuristics",              subject: "HCI",       type: "Link", url: "https://www.nngroup.com/articles/ten-usability-heuristics/" },
-    { id: 2, title: "Norman — Design of Everyday Things (Summary)",   subject: "HCI",       type: "PDF",  url: "notes/norman.pdf" },
+    { id: 2, title: "Norman — Design of Everyday Things (Summary)",   subject: "HCI",       type: "Link", url: "https://en.wikipedia.org/wiki/The_Design_of_Everyday_Things" },
     { id: 3, title: "SQL Tutorial — W3Schools",                       subject: "Databases", type: "Link", url: "https://www.w3schools.com/sql/" },
   ],
   nextId: 10,
@@ -143,6 +143,9 @@ const translations = {
     'toast.subjectExists': '⚠️ Subject already exists',
     'toast.titleRequired': '⚠️ Please enter a title',
     'toast.profileNameRequired': '⚠️ Please enter your full name',
+    'actions.remindLater': 'Remind me later',
+    'download.title': 'Get StudySync on Your Device',
+    'download.description': 'Download our app for a smoother study experience',
   },
   pt: {
     'nav.dashboard': 'Painel',
@@ -251,6 +254,9 @@ const translations = {
     'toast.subjectExists': '⚠️ Essa disciplina já existe',
     'toast.titleRequired': '⚠️ Digite um título',
     'toast.profileNameRequired': '⚠️ Digite seu nome completo',
+    'actions.remindLater': 'Lembrar-me mais tarde',
+    'download.title': 'Obtenha o StudySync no Seu Dispositivo',
+    'download.description': 'Baixe nosso app para uma melhor experiência de estudo',
   },
 };
 
@@ -753,6 +759,28 @@ function showToast(msg, type = '') {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ── Download Modal Init ────────────────────────────────────
+function initDownloadPrompt() {
+  // Only show on first visit (check localStorage)
+  if (!localStorage.getItem('visitedBefore') && !localStorage.getItem('hideDownloadPrompt')) {
+    setTimeout(() => {
+      document.getElementById('modal-download').classList.add('open');
+    }, 2000); // Show after 2 seconds
+  }
+  localStorage.setItem('visitedBefore', 'true');
+}
+
+// ── Accessibility: Keyboard Navigation ──────────────────────
+document.addEventListener('keydown', (e) => {
+  // Close modal with Escape key
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(modal => {
+      modal.classList.remove('open');
+    });
+  }
+});
+
 // ── Init ───────────────────────────────────────────────────────
 updateColorBtns();
 render();
+initDownloadPrompt();
