@@ -668,6 +668,24 @@ select option { background: var(--bg); }
 }
 .download-btn .dl-ico { margin-right:8px; font-size:14px; display:inline-block; }
 .download-btn:hover { border-color: rgba(168,208,255,0.18); transform: translateY(-2px); }
+
+/* Install CTA / Banner */
+.install-cta {
+  position: fixed;
+  right: 20px;
+  bottom: 84px; /* above footer */
+  background: linear-gradient(180deg, rgba(10,18,28,0.98), rgba(16,24,36,0.98));
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 120;
+}
+.install-cta .btn { min-height: 36px; padding: 8px 12px; font-size: 14px; }
+.install-cta.hidden { display: none; }
 .footer-actions { display:flex;align-items:center;gap:12px }
 .footer-credit { color:var(--muted); font-size:13px; text-decoration:none }
 

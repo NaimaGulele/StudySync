@@ -782,6 +782,44 @@ updateColorBtns();
 loadResourcesFromStorage();
 render();
 
+// ── PWA install handling ───────────────────────────────────────
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  deferredInstallPrompt = e;
+});
+
+function promptInstall(kind) {
+  // If there's a saved beforeinstallprompt event, show it
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(choice => {
+      if (choice.outcome === 'accepted') {
+        showToast('App installed', 'success');
+      } else {
+        showToast('Installation dismissed');
+      }
+      deferredInstallPrompt = null;
+    });
+    return;
+  }
+
+  // Fallbacks: if no install prompt is available, for "app" open root, for desktop download ZIP
+  if (kind === 'app') {
+    showToast('Open the browser menu and choose "Install app" to add StudySync to your device.');
+    window.location.href = '/';
+  } else if (kind === 'desktop') {
+    // Trigger download as fallback
+    window.location.href = '/downloads/studysync-windows.zip';
+  }
+}
+
+// Register service worker for PWA support
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW register failed:', err));
+}
+
 // ── Persistence: resources to localStorage ──────────────────────
 function saveResourcesToStorage() {
   try {
