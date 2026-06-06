@@ -6,7 +6,11 @@
   "scripts": {
     "start": "npx serve .",
     "build": "echo \"No build step required for this static app.\"",
-    "test": "echo \"No tests configured.\" && exit 0"
+    "test": "echo \"No tests configured.\" && exit 0",
+    "icons": "node js/generate-icons.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.32.4"
   },
   "keywords": ["study", "planner", "HCI", "accessibility", "resources"],
   "author": "StudySync",

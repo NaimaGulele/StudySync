@@ -12,14 +12,18 @@ Icons
 - The app includes `icons/icon.svg` as the primary logo.
 - For best results on Android and iOS add raster PNG icons at `icons/icon-192.png` and `icons/icon-512.png`.
 
-You can generate these using ImageMagick locally:
+The repo includes a Node helper to generate PNG icons automatically using `sharp`.
+
+Run these commands locally to generate the icons:
 
 ```bash
-magick convert icons/icon.svg -resize 192x192 icons/icon-192.png
-magick convert icons/icon.svg -resize 512x512 icons/icon-512.png
+npm install
+npm run icons
 ```
 
-After adding the PNG icons, commit and push; Chrome on Android will offer an install prompt (or use the in-app install banner).
+This will create `icons/icon-192.png` and `icons/icon-512.png` from `icons/icon.svg`.
+
+After generating and committing the PNGs, push to GitHub; GitHub Pages serves over HTTPS and Chrome on Android will offer installation (iOS requires Safari Add to Home Screen).
 
 Notes about install behavior
 
