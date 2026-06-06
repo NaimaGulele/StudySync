@@ -1,7 +1,7 @@
 {
   "name": "StudySync",
   "short_name": "StudySync",
-  "start_url": ".",
+  "start_url": "./?homescreen=1",
   "display": "standalone",
   "background_color": "#06101d",
   "theme_color": "#06101d",
@@ -18,4 +18,6 @@
       "type": "image/svg+xml"
     }
   ]
+  ,
+  "orientation": "portrait"
 }
