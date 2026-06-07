@@ -85,6 +85,40 @@ body.large-text .modal {
   padding: 18px;
 }
 
+body.readable-mode {
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+body.readable-mode .task-item,
+body.readable-mode .subject-card,
+body.readable-mode .card,
+body.readable-mode .modal,
+body.readable-mode .task-actions,
+body.readable-mode .task-meta,
+body.readable-mode .page-title,
+body.readable-mode .page-subtitle,
+body.readable-mode .hero-tag,
+body.readable-mode .resource-item {
+  padding: 18px;
+}
+body.readable-mode .task-item,
+body.readable-mode .subject-card,
+body.readable-mode .card,
+body.readable-mode .modal {
+  border-radius: 22px;
+}
+body.readable-mode a,
+body.readable-mode button,
+body.readable-mode input,
+body.readable-mode select,
+body.readable-mode textarea {
+  font-size: 1rem;
+}
+body.readable-mode *:focus-visible {
+  outline: 3px solid rgba(102, 178, 255, 0.9);
+  outline-offset: 3px;
+}
+
 body.reduce-motion *,
 body.reduce-motion *::before,
 body.reduce-motion *::after {

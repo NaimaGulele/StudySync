@@ -35,6 +35,7 @@ let state = {
   accessibility: {
     textSize: 'normal',
     reducedMotion: false,
+    readMode: false,
   },
   currentPage: "dashboard",
 };
@@ -58,7 +59,10 @@ const translations = {
     'actions.openResource': 'Open ↗',
     'actions.downloadData': '⬇️ Download',
       'toast.installPromptFallback': 'ℹ️ No install prompt available — downloaded a shortcut instead',
-      'actions.installApp': 'Install',
+      'actions.installApp': 'Add to Home Screen',
+      'actions.readMode': 'Read Mode',
+      'toast.readModeEnabled': '📘 Read mode enabled',
+      'toast.readModeDisabled': '📗 Read mode disabled',
     'actions.accessibilityMode': 'Toggle accessible mode',
     'actions.textSize': 'Toggle larger text',
     'actions.reducedMotion': 'Toggle reduced motion',
@@ -182,7 +186,10 @@ const translations = {
     'actions.delete': 'Excluir',
     'actions.openResource': 'Abrir ↗',
     'actions.downloadData': '⬇️ Baixar',
-      'actions.installApp': 'Instalar',
+      'actions.installApp': 'Adicionar à tela inicial',
+      'actions.readMode': 'Modo de leitura',
+      'toast.readModeEnabled': '📘 Modo de leitura ativado',
+      'toast.readModeDisabled': '📗 Modo de leitura desativado',
     'actions.accessibilityMode': 'Alternar modo acessível',
     'actions.textSize': 'Alternar texto maior',
     'actions.reducedMotion': 'Alternar movimento reduzido',
@@ -413,13 +420,23 @@ function toggleReducedMotion() {
   showToast(state.accessibility.reducedMotion ? t('toast.reducedMotionEnabled') : t('toast.reducedMotionDisabled'), 'success');
 }
 
+function toggleReadMode() {
+  state.accessibility.readMode = !state.accessibility.readMode;
+  document.body.classList.toggle('readable-mode', state.accessibility.readMode);
+  const btn = document.getElementById('read-mode-toggle');
+  if (btn) btn.setAttribute('aria-pressed', state.accessibility.readMode);
+  showToast(state.accessibility.readMode ? t('toast.readModeEnabled') : t('toast.readModeDisabled'), 'success');
+}
+
 function updateAccessibilityControls() {
   document.body.classList.toggle('large-text', state.accessibility.textSize === 'large');
   document.body.classList.toggle('reduce-motion', state.accessibility.reducedMotion);
   const textBtn = document.getElementById('text-size-toggle');
   const motionBtn = document.getElementById('motion-toggle');
+  const readBtn = document.getElementById('read-mode-toggle');
   if (textBtn) textBtn.setAttribute('aria-pressed', state.accessibility.textSize === 'large');
   if (motionBtn) motionBtn.setAttribute('aria-pressed', state.accessibility.reducedMotion);
+  if (readBtn) readBtn.setAttribute('aria-pressed', state.accessibility.readMode);
 }
 
 let deferredInstallPrompt = null;
