@@ -814,8 +814,9 @@ async function handleInstallOrDownload() {
   const isAndroid = /Android/.test(ua);
 
   if (isIOS) {
-    // show simple modal with instructions
-    alert('To install StudySync on iOS: open Safari → Share → "Add to Home Screen".');
+    // show modal with explicit iOS instructions
+    document.getElementById('install-instructions-text').innerHTML = `On iOS (Safari):<br>1. Tap the Share button (box with arrow).<br>2. Choose "Add to Home Screen".<br>3. Confirm to add StudySync to your Home Screen.`;
+    openModal('modal-install-instructions');
     return;
   }
 
@@ -850,6 +851,16 @@ async function handleInstallOrDownload() {
   link.click();
   document.body.removeChild(link);
   showToast(t('toast.installPromptFallback'), 'success');
+}
+
+function copySiteLink() {
+  const url = window.location.origin + window.location.pathname;
+  navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied to clipboard', 'success')).catch(() => showToast('⚠️ Could not copy link', 'error'));
+}
+
+function openInNewTab() {
+  const url = window.location.origin + window.location.pathname;
+  window.open(url, '_blank');
 }
 
 function saveProfile() {
