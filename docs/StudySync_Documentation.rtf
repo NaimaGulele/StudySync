@@ -1,0 +1,63 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}}
+\fs24\b StudySync — Short Documentation\b0\par
+\par
+\b Overview\b0\par
+StudySync is a lightweight single-page web application to help students organize study resources and tasks. It focuses on simplicity, accessibility, and cross-platform availability via Progressive Web App (PWA) features so users can add it to their device home screen.\par
+\par
+\b Key Features\b0\par
+- Resource management: add, edit, and remove study items.\par
+- Task lists and local JSON export/import.\par
+- Accessibility controls: adjustable text size, reduced motion, and high-contrast accessibility mode.\par
+- PWA support: `manifest.json`, service worker (`sw.js`), and app icons for installable experience.\par
+\par
+\b Implementation & Running\b0\par
+- Core files: `index.html` (UI), `js/app.js` (logic), `manifest.json`, `sw.js`, and `icons/`.\par
+- No backend; static site served over HTTPS or localhost. To preview locally run:\par
+  python3 -m http.server 8000\par
+  Then open http://127.0.0.1:8000/ in your browser. Note: full PWA install prompts require HTTPS or localhost.\par
+\par
+\b PWA & Installation\b0\par
+- The app attempts the `beforeinstallprompt` flow on supporting browsers (Chrome/Android).\par
+- On iOS, users must use Safari → Share → Add to Home Screen; the app shows instructions when needed.\par
+- Desktop fallback: the app can generate a shortcut file (`.url`, `.webloc`, or `.desktop`) for manual addition.\par
+\par
+\page
+\b Accessibility & HCI Principles\b0\par
+Below are succinct mappings you can use in an exam answer. Cite these as concise evidence of HCI-aligned design.\par
+\par
+\b Visibility of System Status\b0\par
+- Feedback via toast notifications (actions like export, install) keeps users informed.\par
+\par
+\b Match with the Real World\b0\par
+- Familiar labels and icons (download, add) and straightforward language reduce cognitive load.\par
+\par
+\b User Control and Freedom\b0\par
+- Users can freely add/edit/remove resources and toggle accessibility options at any time.\par
+\par
+\b Consistency and Standards\b0\par
+- Uses standard web patterns and PWA APIs; consistent button placement and labeling across views.\par
+\par
+\b Error Prevention and Recovery\b0\par
+- Clear feedback after actions helps users detect issues; destructive operations require deliberate action.\par
+\par
+\b Recognition rather than Recall\b0\par
+- Visible controls with icons and labels reduce memory load; important functions are discoverable.\par
+\par
+\b Flexibility and Efficiency\b0\par
+- PWA install reduces steps to open the app; export allows quick data transfer.\par
+\par
+\b Accessibility (Universal Design)\b0\par
+- Direct toggles for text size, motion reduction, and contrast support diverse needs; ARIA and semantic HTML improve screen reader support.\par
+\par
+\b Evaluation Plan (brief)\b0\par
+- Heuristic evaluation against Nielsen's heuristics.\par
+- Cognitive walkthroughs for key tasks (add resource, export, install).\par
+- Small-scale usability test (5–8 users) measuring success rate and satisfaction.\par
+\par
+\b Conclusion\b0\par
+StudySync is designed to be simple, accessible, and installable. For your exam emphasize how the app applies HCI principles (visibility, feedback, consistency, accessibility) and the planned evaluation methods.\par
+\par
+\b Contact\b0\par
+Repository: https://github.com/NaimaGulele/StudySync\par
+}
