@@ -57,6 +57,8 @@ const translations = {
     'actions.delete': 'Delete',
     'actions.openResource': 'Open ↗',
     'actions.downloadData': '⬇️ Download',
+      'toast.installPromptFallback': 'ℹ️ No install prompt available — downloaded a shortcut instead',
+      'actions.installApp': '⬇️ Install',
     'actions.accessibilityMode': 'Toggle accessible mode',
     'actions.textSize': 'Toggle larger text',
     'actions.reducedMotion': 'Toggle reduced motion',
@@ -180,6 +182,7 @@ const translations = {
     'actions.delete': 'Excluir',
     'actions.openResource': 'Abrir ↗',
     'actions.downloadData': '⬇️ Baixar',
+      'actions.installApp': '⬇️ Instalar',
     'actions.accessibilityMode': 'Alternar modo acessível',
     'actions.textSize': 'Alternar texto maior',
     'actions.reducedMotion': 'Alternar movimento reduzido',
@@ -788,6 +791,65 @@ function downloadData() {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
   showToast(t('toast.dataDownloaded'), 'success');
+}
+
+async function handleInstallOrDownload() {
+  // Prefer native PWA install prompt when available
+  if (deferredInstallPrompt) {
+    try {
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      if (choice.outcome === 'accepted') showToast(t('toast.appInstalled'), 'success');
+      deferredInstallPrompt = null;
+      hideInstallBanner();
+      return;
+    } catch (e) {
+      console.warn('Install prompt failed', e);
+    }
+  }
+
+  // Platform fallbacks: iOS instructions, or downloadable shortcut for desktop
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isAndroid = /Android/.test(ua);
+
+  if (isIOS) {
+    // show simple modal with instructions
+    alert('To install StudySync on iOS: open Safari → Share → "Add to Home Screen".');
+    return;
+  }
+
+  // Desktop fallback: create a shortcut file download
+  const url = new URL(window.location.href);
+  const siteUrl = url.origin + url.pathname;
+  let content = '';
+  let filename = 'StudySync-shortcut';
+
+  const isWindows = navigator.platform && navigator.platform.indexOf('Win') !== -1;
+  const isMac = navigator.platform && navigator.platform.indexOf('Mac') !== -1;
+  const isLinux = navigator.platform && navigator.platform.indexOf('Linux') !== -1;
+
+  if (isWindows) {
+    content = `[InternetShortcut]\nURL=${siteUrl}\nIconFile=${url.origin}/icons/icon-192.png\nIconIndex=0`;
+    filename += '.url';
+  } else if (isMac) {
+    const xml = `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n  <dict>\n    <key>URL</key>\n    <string>${siteUrl}</string>\n  </dict>\n</plist>`;
+    content = xml;
+    filename += '.webloc';
+  } else {
+    // default to Linux .desktop
+    content = `[Desktop Entry]\nVersion=1.0\nType=Application\nName=StudySync\nExec=xdg-open ${siteUrl}\nIcon=${url.origin}/icons/icon-192.png\nTerminal=false`;
+    filename += '.desktop';
+  }
+
+  const blob = new Blob([content], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast(t('toast.installPromptFallback'), 'success');
 }
 
 function saveProfile() {
